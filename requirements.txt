@@ -1,0 +1,4 @@
+BeautifulSoup==3.2.1
+python-Wappalyzer==0.2.2
+requests==2.8.1
+wheel==0.26.0
