@@ -34,8 +34,8 @@ def analyze_url(url):
     try:
         wappalyzer = Wappalyzer.latest()
         webpage = WebPage.new_from_url(url)
-        print('[+] {0}: {1}'.format(url, wappalyzer.analyze(webpage)))
-    except requests.exceptions.ConnectionError:
+        print('[+] {0} {1}'.format(url, wappalyzer.analyze(webpage)))
+    except (requests.exceptions.ConnectionError, requests.exceptions.ReadTimeout):
         print('[-] Could not connect to {0}'.format(url))
     sys.stdout.flush()
 
