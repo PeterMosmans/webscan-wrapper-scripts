@@ -31,16 +31,14 @@ def analyze_url(host, parameters):
     """
     Analyzes an URL using wappalyzer and prints the results.
     """
+    auth = None
     url = host
     headers = {}
     verify = True
     proxies = {}
     if not urlparse.urlparse(url).scheme:
         url = 'http://{0}'.format(url)
-    # try:
-    # user_agent
     wappalyzer = Wappalyzer.latest()
-    print(parameters)
     if parameters['username'] and parameters['password']:
         if parameters['digest']:
             auth = HTTPDigestAuth(parameters['username'], parameters['password'])
@@ -52,15 +50,15 @@ def analyze_url(host, parameters):
     if parameters.has_key('no_validate'):
         requests.packages.urllib3.disable_warnings()
         verify = False
-    page = requests.get(url, auth=auth, proxies=proxies, verify=verify)
-
-    if page.status_code == 200:
-        webpage = WebPage(url, page.text, headers)
-        print('[+] {0} {1}'.format(host, wappalyzer.analyze(webpage)))
-    # except (requests.exceptions.ConnectionError, requests.exceptions.ReadTimeout):
-        # print('[-] Could not connect to {0}'.format(url))
-    else:
-        print('Got result {0} - cannot analyze that...'.format(page.status_code))
+    try:
+        page = requests.get(url, auth=auth, proxies=proxies, verify=verify)
+        if page.status_code == 200:
+            webpage = WebPage(url, page.text, headers)
+            print('[+] {0} {1}'.format(host, wappalyzer.analyze(webpage)))
+        else:
+            print('Got result {0} - cannot analyze that...'.format(page.status_code))
+    except requests.exceptions.ConnectionError as exception:
+        print('[-] Connection error: {0}'.format(exception))
     sys.stdout.flush()
 
 
