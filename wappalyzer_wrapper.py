@@ -33,7 +33,6 @@ def analyze_url(host, parameters):
     """
     auth = None
     url = host
-    headers = {}
     verify = True
     proxies = {}
     if not urlparse.urlparse(url).scheme:
@@ -53,7 +52,7 @@ def analyze_url(host, parameters):
     try:
         page = requests.get(url, auth=auth, proxies=proxies, verify=verify)
         if page.status_code == 200:
-            webpage = WebPage(url, page.text, headers)
+            webpage = WebPage(url, page.text, page.headers)
             print('[+] {0} {1}'.format(host, wappalyzer.analyze(webpage)))
         else:
             print('Got result {0} - cannot analyze that...'.format(page.status_code))
