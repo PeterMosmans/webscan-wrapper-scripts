@@ -21,7 +21,7 @@ from Wappalyzer import Wappalyzer, WebPage
 __author__ = "Peter Mosmans"
 __copyright__ = "Copyright 2015, Go Forward"
 __license__ = "GPL"
-__version__ = "0.0.2"
+__version__ = "0.0.3"
 __maintainer__ = "Peter Mosmans"
 __contact__ = "support@go-forward.net"
 __status__ = "Development"
@@ -55,7 +55,8 @@ def analyze_url(host, parameters):
             webpage = WebPage(url, page.text, page.headers)
             print('[+] {0} {1}'.format(host, wappalyzer.analyze(webpage)))
         else:
-            print('Got result {0} - cannot analyze that...'.format(page.status_code))
+            print('[-] Got HTTP status code {0} - cannot analyze that...'.
+                  format(page.status_code))
     except requests.exceptions.ConnectionError as exception:
         print('[-] Connection error: {0}'.format(exception))
     sys.stdout.flush()
